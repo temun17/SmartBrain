@@ -1,14 +1,14 @@
 import React from "react";
 import Clarifai from "clarifai";
-import Nav from "./components/Navigation/Nav";
-import Logo from "./components/Logo/Logo";
-import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
-import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
-import Rank from "./components/Rank/Rank";
+import Nav from "../components/Navigation/Nav";
+import Logo from "../components/Logo/Logo";
+import FaceRecognition from "../components/FaceRecognition/FaceRecognition";
+import ImageLinkForm from "../components/ImageLinkForm/ImageLinkForm";
+import Rank from "../components/Rank/Rank";
 import Particles from "react-particles-js";
 
 import { connect } from "react-redux";
-import { setInputURL } from "./actions/actions";
+import { setInputURL } from "../actions/actions";
 
 const app = new Clarifai.App({
   apiKey: "b2760f9e820044308efa89770ba07dab"
