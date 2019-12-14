@@ -5,5 +5,21 @@ import "tachyons";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+import { Provider } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+import { createLogger } from "redux-logger";
+
+import { inputURL } from "./reducers/reducers";
+import "./App.css";
+
+const logger = createLogger();
+
+const store = createStore(inputURL, applyMiddleware(logger));
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("root")
+);
 serviceWorker.unregister();

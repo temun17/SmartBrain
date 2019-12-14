@@ -6,7 +6,9 @@ import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
 import Rank from "./components/Rank/Rank";
 import Particles from "react-particles-js";
-import "./App.css";
+
+import { connect } from "react-redux";
+import { setInputURL } from "./actions/actions";
 
 const app = new Clarifai.App({
   apiKey: "b2760f9e820044308efa89770ba07dab"
@@ -24,27 +26,30 @@ const particlesOptions = {
   }
 };
 
+const mapStateToProps = state => ({
+  input: state.input
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onSearchChange: e => dispatch(setInputURL(e.target.value))
+  };
+};
+
 class App extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      input: "",
       imageURL: ""
     };
   }
 
-  onInputChange = e => {
-    this.setState({
-      input: e.target.value
-    });
-  };
-
   onButtonSubmit = () => {
     this.setState({
-      imageURL: this.state.input
+      imageURL: this.props.input
     });
-    app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input).then(
+    app.models.predict(Clarifai.FACE_DETECT_MODEL, this.props.input).then(
       function(response) {
         console.log(response.outputs[0].data.regions[0].region_info);
       },
@@ -53,6 +58,7 @@ class App extends React.Component {
   };
 
   render() {
+    const { onSearchChange } = this.props;
     return (
       <div className="App">
         <Particles className="particles" params={particlesOptions} />
@@ -60,7 +66,7 @@ class App extends React.Component {
         <Logo />
         <Rank />
         <ImageLinkForm
-          onInputChange={this.onInputChange}
+          onInputChange={onSearchChange}
           onButtonSubmit={this.onButtonSubmit}
         />
         <FaceRecognition imageURL={this.state.imageURL} />
@@ -69,4 +75,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
